@@ -2,6 +2,7 @@ import digits from "./digits.js"
 import defaults from "./defaults.js"
 import TimeLine from "./TimeLine.js"
 import createBall from "./Balls.js"
+import starBackground from "./starBackground.js"
 
 export default class Clock {
     constructor (options) {
@@ -23,12 +24,15 @@ export default class Clock {
         this.balls = []
         this.lastTime = undefined
         this.context = this.getContext()
-        this.timeline = this.countDown()
+        this.background = options.background
+        this.timeline = this.countDown(options)
     }
 
-    countDown () {
+    countDown (options) {
         const callback1 = () => {
             this.context.clearRect(0, 0, this.width, this.height)
+
+            if (this.background) starBackground(this.context, options)
 
             const time = this.getTimeDelta()
 
@@ -37,8 +41,6 @@ export default class Clock {
             this.update()
 
             if (this.balls.length > 700) this.balls.length = 700
-
-            console.log(this.balls.length)
 
             this.lastTime = time
         }
